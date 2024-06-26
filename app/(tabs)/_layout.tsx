@@ -1,37 +1,45 @@
-import { Tabs } from 'expo-router';
-import React from 'react';
+import { Tabs } from 'expo-router'
+import React from 'react'
 
-import { TabBarIcon } from '@/components/navigation/TabBarIcon';
-import { Colors } from '@/constants/Colors';
-import { useColorScheme } from '@/hooks/useColorScheme';
+const CustomTabBar = (props: any) => {
+  return null;
+}
 
-export default function TabLayout() {
-  const colorScheme = useColorScheme();
-
+const TabsLayout = () => {
   return (
-    <Tabs
-      screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-        headerShown: false,
-      }}>
-      <Tabs.Screen
-        name="index"
+    <Tabs>
+      <Tabs.Screen 
+        name='home'
         options={{
           title: 'Home',
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'home' : 'home-outline'} color={color} />
-          ),
         }}
       />
-      <Tabs.Screen
-        name="explore"
+      <Tabs.Screen 
+        name='library'
         options={{
-          title: 'Explore',
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'code-slash' : 'code-slash-outline'} color={color} />
-          ),
+          title: 'Library'
+        }}
+      />
+      <Tabs.Screen 
+        name='upload'
+        options={{
+          title: 'Upload'
+        }}
+      />
+      <Tabs.Screen 
+        name='groups'
+        options={{
+          title: 'Groups'
+        }}
+      />
+      <Tabs.Screen 
+        name='profile'
+        options={{
+          title: 'Profile'
         }}
       />
     </Tabs>
-  );
+  )
 }
+
+export default TabsLayout

@@ -6,11 +6,13 @@ import { useEffect } from 'react';
 import 'react-native-reanimated';
 
 import { useColorScheme } from '@/hooks/useColorScheme';
+import { TamaguiProvider } from 'tamagui';
+import tamaguiConfig from '@/tamagui.config';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
-export default function RootLayout() {
+function RootLayout() {
   const colorScheme = useColorScheme();
   const [loaded] = useFonts({
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
@@ -26,12 +28,33 @@ export default function RootLayout() {
     return null;
   }
 
+
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
-      </Stack>
-    </ThemeProvider>
-  );
+    <TamaguiProvider config={tamaguiConfig} defaultTheme={colorScheme as string}>
+      {/* <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}> */}
+        <Stack>
+          <Stack.Screen
+            name="index"
+          />
+          <Stack.Screen
+            name="onboarding"
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="(auth)"
+          />
+          <Stack.Screen
+            name="(tabs)"
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="about"
+            options={{ presentation: "modal" }}
+          />
+        </Stack>
+      {/* </ThemeProvider> */}
+    </TamaguiProvider>
+  )
 }
+
+export default RootLayout
