@@ -1,44 +1,83 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
+import '~/global.css';
+
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Theme, ThemeProvider } from '@react-navigation/native';
+import { SplashScreen, Stack } from 'expo-router';
+import { StatusBar } from 'expo-status-bar';
+import * as React from 'react';
+import { NAV_THEME } from '~/lib/constants';
+import { useColorScheme } from '~/lib/useColorScheme';
+import { PortalHost } from '@rn-primitives/portal';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
-import * as SplashScreen from 'expo-splash-screen';
-import { useEffect } from 'react';
-import 'react-native-reanimated';
 
-import { useColorScheme } from '@/hooks/useColorScheme';
-import { TamaguiProvider } from 'tamagui';
-import tamaguiConfig from '@/tamagui.config';
+const LIGHT_THEME: Theme = {
+  dark: false,
+  colors: NAV_THEME.light,
+};
+const DARK_THEME: Theme = {
+  dark: true,
+  colors: NAV_THEME.dark,
+};
 
-// Prevent the splash screen from auto-hiding before asset loading is complete.
+export {
+  // Catch any errors thrown by the Layout component.
+  ErrorBoundary,
+} from 'expo-router';
+
+// Prevent the splash screen from auto-hiding before getting the color scheme.
 SplashScreen.preventAutoHideAsync();
 
-function RootLayout() {
-  const colorScheme = useColorScheme();
-  const [loaded] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
+export default function RootLayout() {
+  const { colorScheme, setColorScheme, isDarkColorScheme } = useColorScheme();
+  const [isColorSchemeLoaded, setIsColorSchemeLoaded] = React.useState(false);
+
+  // TODO: Fix issue with font being used before it's loaded
+  const [fontLoaded] = useFonts({
+    Satoshi: require('../assets/fonts/Satoshi-Medium.otf')
   });
 
-  useEffect(() => {
-    if (loaded) {
+  React.useEffect(() => {
+    (async () => {
+      const theme = await AsyncStorage.getItem('theme');
+      // For web only:
+      // if (Platform.OS === 'web') {
+      //   // Adds the background color to the html element to prevent white background on overscroll.
+      //   document.documentElement.classList.add('bg-background');
+      // }
+      if (!theme) {
+        // AsyncStorage.setItem('theme', colorScheme);
+        setColorScheme(colorScheme)
+        return;
+      }
+      if (theme !== colorScheme) {
+        setColorScheme(theme as 'dark' | 'light');
+        return;
+      }
+    })().finally(() => {
+      setIsColorSchemeLoaded(true);
+    })
+    
+    if (fontLoaded) {
       SplashScreen.hideAsync();
     }
-  }, [loaded]);
+  }, [fontLoaded]);
 
-  if (!loaded) {
+  if (!isColorSchemeLoaded && !fontLoaded) {
     return null;
   }
 
-
   return (
-    <TamaguiProvider config={tamaguiConfig} defaultTheme={colorScheme as string}>
-      {/* <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}> */}
+    <ThemeProvider value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}>
+      <SafeAreaProvider>
+        <StatusBar style={isDarkColorScheme ? 'light' : 'dark'} />
         <Stack>
-          <Stack.Screen
-            name="index"
-          />
           <Stack.Screen
             name="onboarding"
             options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="index"
           />
           <Stack.Screen
             name="(auth)"
@@ -47,14 +86,9 @@ function RootLayout() {
             name="(tabs)"
             options={{ headerShown: false }}
           />
-          <Stack.Screen
-            name="about"
-            options={{ presentation: "modal" }}
-          />
         </Stack>
-      {/* </ThemeProvider> */}
-    </TamaguiProvider>
-  )
+        <PortalHost />
+      </SafeAreaProvider>
+    </ThemeProvider>
+  );
 }
-
-export default RootLayout
