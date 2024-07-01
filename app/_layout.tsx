@@ -46,6 +46,7 @@ export default function RootLayout() {
       //   document.documentElement.classList.add('bg-background');
       // }
       if (!theme) {
+        // TODO: Save the theme when there's a color mode switcher
         // AsyncStorage.setItem('theme', colorScheme);
         setColorScheme(colorScheme)
         return;
