@@ -66,10 +66,10 @@ const OnboardingScreen = () => {
           <Text className="text-sm">Terms of Service</Text> and{" "}
           <Text className="text-sm">Privacy Policy</Text>{" "}
         </Text>
-        <Link href="(auth)/login" asChild>
+        <Link href="(auth)/signup" asChild>
           <Button className="w-full md:w-[49%] capitalize">Get started</Button>
         </Link>
-        <Link href="(auth)/signup" asChild>
+        <Link href="(auth)/login" asChild>
           <Button className="w-full md:w-[49%]" variant="secondary">Login</Button>
         </Link>
       </View>
