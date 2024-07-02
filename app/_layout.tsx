@@ -29,16 +29,16 @@ export {
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
-  const { colorScheme, setColorScheme, isDarkColorScheme } = useColorScheme();
   const [isColorSchemeLoaded, setIsColorSchemeLoaded] = React.useState(false);
+  const { colorScheme, isDarkColorScheme, setColorScheme } = useColorScheme()
 
   // TODO: Fix issue with font being used before it's loaded
   const [fontLoaded] = useFonts({
     Satoshi: require('../assets/fonts/Satoshi-Medium.otf')
   });
 
-  React.useEffect(() => {
-    (async () => {
+  async function loadColorScheme() {
+    try {
       const theme = await AsyncStorage.getItem('theme');
       // For web only:
       // if (Platform.OS === 'web') {
@@ -47,24 +47,27 @@ export default function RootLayout() {
       // }
       if (!theme) {
         // TODO: Save the theme when there's a color mode switcher
-        // AsyncStorage.setItem('theme', colorScheme);
-        setColorScheme(colorScheme)
+        await AsyncStorage.setItem('theme', colorScheme);
         return;
       }
       if (theme !== colorScheme) {
         setColorScheme(theme as 'dark' | 'light');
         return;
       }
-    })().finally(() => {
+    }
+    finally {
       setIsColorSchemeLoaded(true);
-    })
-    
-    if (fontLoaded) {
+    }
+  }
+  loadColorScheme()
+
+  React.useEffect(() => {
+    if (fontLoaded && isColorSchemeLoaded) {
       SplashScreen.hideAsync();
     }
-  }, [fontLoaded]);
+  }, [fontLoaded, isColorSchemeLoaded]);
 
-  if (!isColorSchemeLoaded && !fontLoaded) {
+  if (!fontLoaded) {
     return null;
   }
 
