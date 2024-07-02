@@ -47,7 +47,7 @@ export default function RootLayout() {
       // }
       if (!theme) {
         // TODO: Save the theme when there's a color mode switcher
-        await AsyncStorage.setItem('theme', colorScheme);
+        // await AsyncStorage.setItem('theme', colorScheme);
         return;
       }
       if (theme !== colorScheme) {
@@ -82,6 +82,7 @@ export default function RootLayout() {
           />
           <Stack.Screen
             name="index"
+            options={{ headerShown: false }}
           />
           <Stack.Screen
             name="(auth)"

@@ -15,7 +15,7 @@ const buttonVariants = cva(
           'border border-input bg-background web:hover:bg-accent web:hover:text-accent-foreground active:bg-accent',
         secondary: 'bg-secondary/50 web:hover:opacity-80 active:opacity-80',
         ghost: 'web:hover:bg-accent web:hover:text-accent-foreground active:bg-accent',
-        link: 'web:underline-offset-4 web:hover:underline web:focus:underline ',
+        link: 'web:underline-offset-4 web:hover:underline web:focus:underline',
       },
       size: {
         default: 'h-10 px-4 py-2 native:h-16 native:px-5 native:py-3',
@@ -35,7 +35,7 @@ const buttonTextVariants = cva(
   'web:whitespace-nowrap text-sm native:text-base font-medium text-foreground web:transition-colors',
   {
     variants: {
-      variant: {
+      textVariant: {
         default: 'text-black',
         destructive: 'text-destructive-foreground',
         outline: 'group-active:text-accent-foreground',
@@ -43,22 +43,22 @@ const buttonTextVariants = cva(
         ghost: 'group-active:text-accent-foreground',
         link: 'text-primary group-active:underline',
       },
-      size: {
+      textSize: {
         default: '',
-        sm: '',
+        sm: 'native:text-sm',
         lg: 'native:text-lg',
         icon: '',
       },
     },
     defaultVariants: {
-      variant: 'default',
-      size: 'default',
+      textVariant: 'default',
+      textSize: 'default',
     }
   }
 );
 
 type ButtonProps = React.ComponentPropsWithoutRef<typeof Pressable> &
-  VariantProps<typeof buttonVariants>;
+  VariantProps<typeof buttonVariants>
 
 const Button = React.forwardRef<React.ElementRef<typeof Pressable>, ButtonProps>(
   ({ className, variant, size, children, ...props }, ref) => {
@@ -66,7 +66,7 @@ const Button = React.forwardRef<React.ElementRef<typeof Pressable>, ButtonProps>
       <TextClassContext.Provider
         value={cn(
           props.disabled && 'web:pointer-events-none',
-          buttonTextVariants({ variant, size })
+          buttonTextVariants({ textVariant: variant, textSize: size })
         )}
       >
         <Pressable
