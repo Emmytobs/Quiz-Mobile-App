@@ -3,6 +3,7 @@ import { Image, View } from "react-native";
 import { Text } from "~/components/ui/text";
 import { SafeAreaView } from "~/components/SafeAreaView";
 import { Button } from "~/components/ui/button";
+import { Link } from "expo-router";
 
 const OnboardingScreen = () => {
   return (
@@ -20,10 +21,12 @@ const OnboardingScreen = () => {
         <Text className="text-sm">Privacy Policy</Text>{" "}
       </Text>
       <View className="md:max-w-[30em] flex flex-wrap flex-row justify-between items-center gap-y-5 mt-10 mx-auto w-full md:flex-row">
-        <Button className="w-full md:w-[49%] capitalize">Get started</Button>
-        <Button className="w-full md:w-[49%]" variant="secondary">
-          Login
-        </Button>
+        <Link href="(auth)/login" asChild>
+          <Button className="w-full md:w-[49%] capitalize">Get started</Button>
+        </Link>
+        <Link href="(auth)/signup" asChild>
+          <Button className="w-full md:w-[49%]" variant="secondary">Login</Button>
+        </Link>
       </View>
     </SafeAreaView>
   );
