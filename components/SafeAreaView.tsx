@@ -9,7 +9,7 @@ cssInterop(SafeAreaView, {
 });
 
 function _SafeAreaView({className, ...props}: SafeAreaViewProps) {
-  return <SafeAreaView className={`flex-1 justify-center items-center w-[90%] mx-auto ${className}`} {...props}></SafeAreaView>
+  return <SafeAreaView className={`flex-1 items-center w-[90%] mx-auto ${className}`} {...props}></SafeAreaView>
 }
 
 export { _SafeAreaView as SafeAreaView }

@@ -2,7 +2,6 @@ import * as React from 'react';
 import { TextInput, View } from 'react-native';
 import { cn } from '~/lib/utils';
 import { Label } from './label';
-import { Text } from './text';
 
 type TextInputType = typeof TextInput
 type CustomTextInputProps = React.ComponentPropsWithoutRef<TextInputType> & {
@@ -20,10 +19,9 @@ const Input = React.forwardRef<
   React.ElementRef<TextInputType>,
   CustomTextInputProps  
 >(({ className, placeholderClassName, label, labelFor, ...props }, ref) => {
-  {/* TODO: Fix the label bottom margin */}
   const hasLabel = label && labelFor;
   return (
-    <View className={cn("w-full flex flex-col justify-between", hasLabel && 'gap-y-4')}>
+    <View className={cn("w-full flex flex-col justify-between", hasLabel && 'gap-y-2')}>
       {
         hasLabel ?
           <Label 

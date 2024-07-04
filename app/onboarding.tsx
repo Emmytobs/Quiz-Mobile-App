@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import { Dimensions, Image, Pressable, View } from "react-native";
+import { Dimensions, Image, View } from "react-native";
 import { Text } from "~/components/ui/text";
 import { SafeAreaView } from "~/components/SafeAreaView";
 import { Button } from "~/components/ui/button";
 import { Link } from "expo-router";
 import Carousel from "react-native-reanimated-carousel";
+import * as WebBrowser from "expo-web-browser"
 
 const OnboardingScreen = () => {
   const { width } = Dimensions.get("window")
@@ -28,6 +29,10 @@ const OnboardingScreen = () => {
       imageSource: require("../assets/images/screens/onboarding/slide-4.png")
     },
   ]
+
+  const openWebBrowser = async (url: string) => {
+    await WebBrowser.openBrowserAsync(url);
+  }
 
   return (
     <SafeAreaView>
@@ -63,8 +68,12 @@ const OnboardingScreen = () => {
       <View className="md:max-w-[30em] flex flex-wrap flex-row justify-between items-center gap-y-5 my-7 mx-auto w-full md:flex-row">
         <Text className="text-center text-sm text-primary/50 my-2 mx-auto flex-row flex-wrap items-center">
           By clicking Get started, you agree to our{" "}
-          <Text className="text-sm">Terms of Service</Text> and{" "}
-          <Text className="text-sm">Privacy Policy</Text>{" "}
+          <Link href="#" onPress={() => openWebBrowser("https://quizdash.app/terms-and-conditions")}>
+            <Text className="text-sm">Terms of Service</Text>
+          </Link> and{" "}
+          <Link href="#" onPress={() => openWebBrowser("https://quizdash.app/privacy-policy")}>
+            <Text className="text-sm">Privacy Policy</Text>.
+          </Link>
         </Text>
         <Link href="(auth)/signup" asChild>
           <Button className="w-full md:w-[49%] capitalize">Get started</Button>

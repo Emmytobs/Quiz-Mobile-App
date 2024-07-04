@@ -49,6 +49,9 @@ module.exports = {
         md: 20,
         lg: 24,
       },
+      fontFamily: {
+        satoshi: ["Satoshi"]
+      },
       borderWidth: {
         hairline: hairlineWidth(),
       },

@@ -50,4 +50,23 @@
 
     --brand: 36.61, 97.52%, 47.45%
   }
+
+  @font-face {
+    font-family: "Satoshi";
+    font-weight: 300;
+    font-style: normal;
+    src: url(./assets/fonts/Satoshi-Light.otf);
+  }
+  @font-face {
+    font-family: "Satoshi";
+    font-weight: 500;
+    font-style: normal;
+    src: url(./assets/fonts/Satoshi-Medium.otf);
+  }
+  @font-face {
+    font-family: "Satoshi";
+    font-weight: 700;
+    font-style: normal;
+    src: url(./assets/fonts/Satoshi-Bold.otf);
+  }
 }

@@ -3,11 +3,14 @@ import React from "react";
 import { Input } from "~/components/ui/input";
 import { SafeAreaView } from "~/components/SafeAreaView";
 import { Button } from "~/components/ui/button";
+import OAuthLoginButtons from "../components/OAuthLoginButtons";
+import { Text } from "~/components/ui/text";
+import { Link } from "expo-router";
 
 const SignupScreen = () => {
   return (
     <SafeAreaView>
-      <View className="w-full flex-1 gap-y-10">
+      <View className="w-full gap-y-8">
         <Input
           label="Full name"
           className="lowercase"
@@ -39,10 +42,12 @@ const SignupScreen = () => {
           placeholder="* * * * * *"
           secureTextEntry
         />
-      </View>
 
-      <View className="w-full">
         <Button>Create</Button>
+        <OAuthLoginButtons />
+        <View>
+          <Text className="text-primary/50 text-center">Already have an account? <Link href="(auth)/login" asChild><Text>Login</Text></Link></Text>
+        </View>
       </View>
     </SafeAreaView>
   );
