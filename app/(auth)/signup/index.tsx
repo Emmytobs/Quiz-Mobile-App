@@ -6,8 +6,12 @@ import { Button } from "~/components/ui/button";
 import OAuthLoginButtons from "../components/OAuthLoginButtons";
 import { Text } from "~/components/ui/text";
 import { Link } from "expo-router";
+import { useColorScheme } from "~/lib/useColorScheme";
+import { cn } from "~/lib/utils";
 
 const SignupScreen = () => {
+  const { isDarkColorScheme } = useColorScheme()
+  
   return (
     <SafeAreaView>
       <View className="w-full gap-y-8">
@@ -46,7 +50,11 @@ const SignupScreen = () => {
         <Button>Create</Button>
         <OAuthLoginButtons />
         <View>
-          <Text className="text-primary/50 text-center">Already have an account? <Link href="(auth)/login" asChild><Text>Login</Text></Link></Text>
+          <Text className="text-primary/50 text-center">Already have an account? {" "}
+            <Link href="(auth)/login" asChild>
+              <Text className={cn("text-primary", isDarkColorScheme && "text-brand")}>Login</Text>
+            </Link>
+          </Text>
         </View>
       </View>
     </SafeAreaView>

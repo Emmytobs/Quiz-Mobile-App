@@ -6,8 +6,11 @@ import { Button } from "~/components/ui/button";
 import { Text } from "~/components/ui/text";
 import { Link } from "expo-router";
 import OAuthLoginButtons from "../components/OAuthLoginButtons";
+import { useColorScheme } from "~/lib/useColorScheme";
+import { cn } from "~/lib/utils";
 
 const LoginScreen = () => {
+  const { isDarkColorScheme } = useColorScheme()
   return (
     <SafeAreaView>
       <View className="w-full flex-1 gap-y-8">
@@ -16,7 +19,7 @@ const LoginScreen = () => {
           labelFor="email"
           aria-labelledbyledBy="email"
           aria-errormessage="inputError"
-          placeholder="Example@gmail.com"
+          placeholder="johndoe@example.com"
         />
         <Input
           label="Password"
@@ -32,7 +35,11 @@ const LoginScreen = () => {
         </Link>
         <OAuthLoginButtons />
         <View>
-          <Text className="text-primary/50 text-center">{"Don't"} have an account? <Link href="(auth)/signup" asChild><Text>Create account</Text></Link></Text>
+          <Text className="text-primary/50 text-center">{"Don't"} have an account?{" "} 
+            <Link href="(auth)/signup" asChild>
+              <Text className={cn("text-primary", isDarkColorScheme && "text-brand")}>Create account</Text>
+            </Link>
+          </Text>
         </View>
       </View>
     </SafeAreaView>
