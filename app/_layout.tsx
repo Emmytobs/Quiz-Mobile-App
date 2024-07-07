@@ -32,9 +32,8 @@ export default function RootLayout() {
   const [isColorSchemeLoaded, setIsColorSchemeLoaded] = React.useState(false);
   const { colorScheme, isDarkColorScheme, setColorScheme } = useColorScheme()
 
-  // TODO: Fix issue with font being used before it's loaded
   const [fontLoaded] = useFonts({
-    Satoshi: require('../assets/fonts/Satoshi-Medium.otf')
+    Satoshi: require('../assets/fonts/Satoshi-Medium.otf'),
   });
 
   async function loadColorScheme() {
