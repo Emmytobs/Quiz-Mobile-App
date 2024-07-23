@@ -11,6 +11,7 @@ import { PortalHost } from '@rn-primitives/portal';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { useFonts } from 'expo-font';
 import { getCurrentLocale, useLocale } from '~/stores/locale';
+import i18n from '~/assets/translations/i18n';
 
 const LIGHT_THEME: Theme = {
   dark: false,
@@ -60,12 +61,19 @@ export default function RootLayout() {
       setIsColorSchemeLoaded(true);
     }
   }
-  loadColorScheme();
 
-  (async () => {
+  async function loadLocale() {
     const currentLocale = await getCurrentLocale();
+    if (currentLocale != i18n.language) {
+      i18n.changeLanguage(currentLocale);
+    }
     setLocale(currentLocale)
-  })()
+  }
+  
+  React.useEffect(() => {
+    loadColorScheme();
+    loadLocale()
+  }, [])
 
   React.useEffect(() => {
     if (fontLoaded && isColorSchemeLoaded && locale) {

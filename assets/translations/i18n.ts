@@ -26,7 +26,7 @@ i18n
     compatibilityJSON: 'v3',
     resources,
     // ns: ['onboarding'],
-    // lng: 'en',// TODO: Set default lang to user's device lang.
+    lng: 'en',// TODO: Set default lang to user's device lang.
   });
 
-export default {i18n};
+export default i18n;

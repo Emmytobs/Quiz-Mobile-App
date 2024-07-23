@@ -44,12 +44,12 @@ const AuthLayout = () => {
           title: "Password Reset",
         }}
       />
-      <Stack.Screen
+      {/* <Stack.Screen
         name="otp/index"
         options={{
           title: "Password Reset",
         }}
-      />
+      /> */}
     </Stack>
   );
 };

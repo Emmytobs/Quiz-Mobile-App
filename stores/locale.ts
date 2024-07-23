@@ -4,14 +4,14 @@ import { getLocales } from 'expo-localization';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { defaultLocale, supportedLocales } from "~/lib/constants";
 
-type Locales = typeof supportedLocales[number]
+type Locale = typeof supportedLocales[number]
 interface LocaleStore {
-  locale: Locales | null;
-  setLocale: (locale: Locales) => void
+  locale: Locale | null;
+  setLocale: (locale: Locale) => void
 }
 
-async function getCurrentLocale(): Promise<Locales> {
-  const localeInStorage = await AsyncStorage.getItem("locale") as Locales
+async function getCurrentLocale(): Promise<Locale> {
+  const localeInStorage = await AsyncStorage.getItem("locale") as Locale
   if (localeInStorage) {
     return localeInStorage
   }
@@ -27,10 +27,13 @@ async function getCurrentLocale(): Promise<Locales> {
 
 const asyncStorage: StateStorage = {
   async setItem(name, value) {
-    await AsyncStorage.setItem(name, value)    
+    const formattedValue = JSON.parse(value)['state'][name] // TODO: Figure out why Zustand calls setItem with the object `{state: { [name]: [value] }}`
+    if (formattedValue === null) return; // TODO: setItem gets called upon initial render. Figure out why
+    await AsyncStorage.setItem(name, formattedValue)
   },
   async getItem(name) {
-    return (await AsyncStorage.getItem(name)) || null;
+    const item = (await AsyncStorage.getItem(name)) 
+    return item
   },
   // not implemented until we need to remove the locale from async storage
   removeItem(name) {
@@ -41,7 +44,7 @@ const useLocale = create(
   persist<LocaleStore>(
     (set) => ({
       locale: null,
-      setLocale: (locale: Locales) => {
+      setLocale: (locale: Locale) => {
         set({ locale });
       }
     }),
