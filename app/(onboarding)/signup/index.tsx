@@ -5,7 +5,7 @@ import { SafeAreaView } from "~/components/SafeAreaView";
 import { Button } from "~/components/ui/button";
 import OAuthLoginButtons from "../components/OAuthLoginButtons";
 import { Text } from "~/components/ui/text";
-import { Link } from "expo-router";
+import { Link, router } from "expo-router";
 import { useColorScheme } from "~/lib/useColorScheme";
 import { cn } from "~/lib/utils";
 import useAxios from "~/lib/hooks/axios";
@@ -13,16 +13,37 @@ import { Controller, useForm } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
 import Toast from "react-native-toast-message";
 import { useTranslation } from "react-i18next";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod"
+import { useSession } from "~/stores/session";
 
 const SignupScreen = () => {
   const { isDarkColorScheme } = useColorScheme()
   const { t } = useTranslation("onboarding", { keyPrefix: "AuthScreens" });
+
+  const signupSchema = z.object({
+    fullName: z.string({
+      message: "Please enter your full name"
+    }),
+    email: z.string().email({
+      message: "Please enter your email",
+    }),
+    password: z
+      .string({ 
+        message: "Please enter your password",
+      })
+      .min(4, { message: "Password must contain at least 4 characters" }),
+    confirmPassword: z
+      .string({ message: "Please re-enter your password" })
+  })
+
   const axios = useAxios();
+  const setSession = useSession(({ setSession }) => setSession)
   const defaultFormValues = {
-    fullName: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
+    fullName: "Jane Doe",
+    email: "test5@email.com",
+    password: "newpassword",
+    confirmPassword: "newpassword",
   }
   const {
     control,
@@ -30,12 +51,17 @@ const SignupScreen = () => {
     formState: { errors }
   } = useForm({
     defaultValues: defaultFormValues,
+    resolver: zodResolver(signupSchema)
   })
   
   const { data, error, isPending, mutate: signupUser } = useMutation({
     mutationFn: async (signupCredentials: typeof defaultFormValues) => {
+      const { fullName: full_name, email, password: password1, confirmPassword: password2 } = signupCredentials
       try {
-        const response = await axios.post(`<insert_endpoint_here>`, signupCredentials)
+        const response = await axios.post(
+          `/authentication/sign-up/`, 
+          { full_name, email, password1, password2 }
+        )
         return response
       } catch (error) {
         throw new Error(error as any);
@@ -55,8 +81,16 @@ const SignupScreen = () => {
         text1: error.message
       });
     }
-    if (data) console.log(data)
+    if (data) {
+      console.log(data.data)
+      setSession(data.data)
+      router.replace("(tabs)/home")
+    }
   }, [data, error]);
+
+  // useEffect(() => {
+  //   console.log(errors)
+  // }, [errors])
   
   return (
     <SafeAreaView>
@@ -76,8 +110,8 @@ const SignupScreen = () => {
                 aria-labelledbyledBy="fullName"
                 aria-errormessage="inputError"
                 placeholder="John Doe"
-                hasError={!!errors["fullName"]}
-                errorMessage={"Please enter your full name"}
+                hasError={!!errors.fullName}
+                errorMessage={errors.fullName?.message}
                 onBlur={onBlur}
                 onChangeText={onChange}
                 value={value}
@@ -97,8 +131,8 @@ const SignupScreen = () => {
                 aria-labelledbyledBy="email"
                 aria-errormessage="inputError"
                 placeholder="johndoe@example.com"
-                hasError={!!errors["email"]}
-                errorMessage="Please enter your email"
+                hasError={!!errors.email}
+                errorMessage={errors.email?.message}
                 onBlur={onBlur}
                 onChangeText={onChange}
                 value={value}
@@ -108,7 +142,7 @@ const SignupScreen = () => {
           <Controller 
             control={control}
             rules={{
-              required: true
+              required: true,
             }}
             name="password"
             render={({ field: { onChange, onBlur, value } }) => (
@@ -119,8 +153,8 @@ const SignupScreen = () => {
                 aria-errormessage="inputError"
                 placeholder="* * * * * *"
                 secureTextEntry
-                hasError={!!errors["password"]}
-                errorMessage="Please enter your password"
+                hasError={!!errors.password}
+                errorMessage={errors.password?.message}
                 onBlur={onBlur}
                 onChangeText={onChange}
                 value={value}
@@ -130,7 +164,12 @@ const SignupScreen = () => {
           <Controller 
             control={control}
             rules={{
-              required: true
+              required: true,
+              validate: {
+                passwordMismatch: (value, formValues) => {
+                  return value === formValues.password
+                }
+              }
             }}
             name="confirmPassword"
             render={({ field: { onChange, onBlur, value } }) => (
@@ -141,8 +180,8 @@ const SignupScreen = () => {
                 aria-errormessage="inputError"
                 placeholder="* * * * * *"
                 secureTextEntry
-                hasError={!!errors["confirmPassword"]}
-                errorMessage="Please re-enter your password"
+                hasError={!!errors.confirmPassword}
+                errorMessage={errors.confirmPassword?.message}
                 onBlur={onBlur}
                 onChangeText={onChange}
                 value={value}
@@ -150,7 +189,7 @@ const SignupScreen = () => {
             )}
           />
 
-          <Button onPress={handleSubmit(onSubmit)} disabled={isPending}>{isPending ? t("Creating...") : t("Create")}</Button>
+          <Button onPress={handleSubmit(onSubmit)} disabled={isPending}>{isPending ? t("Creating") : t("Create")}</Button>
           <OAuthLoginButtons />
           <View>
             <Text className="text-primary/50 text-center">{t("Already have an account?")} {" "}

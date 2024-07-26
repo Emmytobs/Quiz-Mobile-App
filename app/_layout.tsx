@@ -13,6 +13,8 @@ import { useFonts } from 'expo-font';
 import { getCurrentLocale, useLocale } from '~/stores/locale';
 import i18n from '~/assets/translations/i18n';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { StateStorage } from '~/lib/stateStorage';
+import { Session, useSession } from '~/stores/session';
 
 const LIGHT_THEME: Theme = {
   dark: false,
@@ -35,6 +37,7 @@ export default function RootLayout() {
   const [isColorSchemeLoaded, setIsColorSchemeLoaded] = React.useState(false);
   const { colorScheme, isDarkColorScheme, setColorScheme } = useColorScheme()
   const { locale, setLocale } = useLocale((state) => state)
+  const setSession = useSession(({ setSession }) => setSession)
 
   const [fontLoaded] = useFonts({
     Satoshi: require('../assets/fonts/Satoshi-Medium.otf'),
@@ -70,10 +73,18 @@ export default function RootLayout() {
     }
     setLocale(currentLocale)
   }
+
+  async function loadSession() {
+    const session = await StateStorage.getItem<Session>('session')
+    if (!!session) {
+      setSession(session);
+    }
+  }
   
   React.useEffect(() => {
     loadColorScheme();
-    loadLocale()
+    loadLocale();
+    loadSession();
   }, [])
 
   React.useEffect(() => {
@@ -95,15 +106,11 @@ export default function RootLayout() {
           <StatusBar style={isDarkColorScheme ? 'light' : 'dark'} />
           <Stack>
             <Stack.Screen
-              name="onboarding"
+              name="(onboarding)"
               options={{ headerShown: false }}
             />
             <Stack.Screen
               name="index"
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="(auth)"
               options={{ headerShown: false }}
             />
             <Stack.Screen
