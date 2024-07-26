@@ -12,6 +12,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { useFonts } from 'expo-font';
 import { getCurrentLocale, useLocale } from '~/stores/locale';
 import i18n from '~/assets/translations/i18n';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 const LIGHT_THEME: Theme = {
   dark: false,
@@ -81,6 +82,8 @@ export default function RootLayout() {
     }
   }, [locale, fontLoaded, isColorSchemeLoaded]);
 
+  const queryClient = new QueryClient()
+
   if (!fontLoaded && !locale) {
     return null;
   }
@@ -88,22 +91,28 @@ export default function RootLayout() {
   return (
     <ThemeProvider value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}>
       <SafeAreaProvider>
-        <StatusBar style={isDarkColorScheme ? 'light' : 'dark'} />
-        <Stack>
-          <Stack.Screen
-            name="(onboarding)"
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="index"
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="(tabs)"
-            options={{ headerShown: false }}
-          />
-        </Stack>
-        <PortalHost />
+        <QueryClientProvider client={queryClient}>
+          <StatusBar style={isDarkColorScheme ? 'light' : 'dark'} />
+          <Stack>
+            <Stack.Screen
+              name="onboarding"
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="index"
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="(auth)"
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="(tabs)"
+              options={{ headerShown: false }}
+            />
+          </Stack>
+          <PortalHost />
+        </QueryClientProvider>
       </SafeAreaProvider>
     </ThemeProvider>
   );
