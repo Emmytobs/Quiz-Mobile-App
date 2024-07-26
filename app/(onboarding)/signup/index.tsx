@@ -8,15 +8,18 @@ import { Text } from "~/components/ui/text";
 import { Link } from "expo-router";
 import { useColorScheme } from "~/lib/useColorScheme";
 import { cn } from "~/lib/utils";
+import { useTranslation } from "react-i18next";
+import { TranslationNamespaces } from "~/assets/translations";
 
 const SignupScreen = () => {
   const { isDarkColorScheme } = useColorScheme()
-  
+  const { t } = useTranslation<TranslationNamespaces, "AuthScreens">("onboarding", { keyPrefix: "AuthScreens" });
+
   return (
     <SafeAreaView>
       <View className="w-full gap-y-8">
         <Input
-          label="Full name"
+          label={t("Full name")}
           className="lowercase"
           labelFor="fullName"
           aria-labelledbyledBy="fullName"
@@ -24,14 +27,14 @@ const SignupScreen = () => {
           placeholder="John Doe"
         />
         <Input
-          label="Email"
+          label={t("Email")}
           labelFor="email"
           aria-labelledbyledBy="email"
           aria-errormessage="inputError"
           placeholder="johndoe@example.com"
         />
         <Input
-          label="Password"
+          label={t("Password")}
           labelFor="password"
           aria-labelledbyledBy="password"
           aria-errormessage="inputError"
@@ -39,7 +42,7 @@ const SignupScreen = () => {
           secureTextEntry
         />
         <Input
-          label="Confirm Password"
+          label={t("Confirm Password")}
           labelFor="confirmPassword"
           aria-labelledbyledBy="confirmPassword"
           aria-errormessage="inputError"
@@ -47,12 +50,12 @@ const SignupScreen = () => {
           secureTextEntry
         />
 
-        <Button>Create</Button>
+        <Button>{t("Create")}</Button>
         <OAuthLoginButtons />
         <View>
-          <Text className="text-primary/50 text-center">Already have an account? {" "}
-            <Link href="(auth)/login" asChild>
-              <Text className={cn("text-primary", isDarkColorScheme && "text-brand")}>Login</Text>
+          <Text className="text-primary/50 text-center">{t("Already have an account?")} {" "}
+            <Link href="(onboarding)/login" asChild>
+              <Text className={cn("text-primary", isDarkColorScheme && "text-brand")}>{t("Login")}</Text>
             </Link>
           </Text>
         </View>

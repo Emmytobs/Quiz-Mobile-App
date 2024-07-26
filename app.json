@@ -5,14 +5,16 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "myapp",
+    "scheme": "quizdash",
     "userInterfaceStyle": "automatic",
     "splash": {
       "image": "./assets/images/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#EF9303"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true
     },
@@ -20,7 +22,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.owlya.quizdash"
     },
     "web": {
       "bundler": "metro",
@@ -32,12 +35,25 @@
       [
         "expo-font",
         {
-          "fonts": ["./assets/fonts/Satoshi-Light.otf", "./assets/fonts/Satoshi-Medium.otf", "./assets/fonts/Satoshi-Bold.otf"]
+          "fonts": [
+            "./assets/fonts/Satoshi-Light.otf",
+            "./assets/fonts/Satoshi-Medium.otf",
+            "./assets/fonts/Satoshi-Bold.otf"
+          ]
         }
-      ]
+      ],
+      "expo-localization"
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "b301cb31-d231-45a9-bdcd-d0c8712fae06"
+      }
     }
   }
 }

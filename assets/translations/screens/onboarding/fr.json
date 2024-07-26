@@ -1,0 +1,30 @@
+{
+  "WelcomeScreen": {
+    "carousel": {
+      "slide-1": "L'application Quiz Dash vous aide à conquérir vos études avec facilité.",
+      "slide-2": "Téléchargez vos documents d'étude et laissez Dash les organiser pour un apprentissage efficace.",
+      "slide-3": "Créez des quiz personnalisés à partir de vos guides d'étude et suivez vos progrès.",
+      "slide-4": "Rejoignez des groupes d'étude et rivalisez avec des amis pour réussir votre prochain examen!"
+    },
+    "terms": {
+      "prefix": "En cliquant sur Commencer, vous acceptez nos"
+    },
+    "Terms of Service": "Conditions d'utilisation",
+    "Privacy Policy": "Politique de confidentialité",
+    "Get started": "Commencer",
+    "Login": "Connexion"
+  },
+  "AuthScreens": {
+    "Full name": "Nom complet",
+    "Email": "Email",
+    "Password": "Mot de passe",
+    "Confirm Password": "Confirmer le mot de passe",
+    "Create": "Créer",
+    "Already have an account?": "Vous avez déjà un compte?",
+    "Don't have an account?": "Vous n'avez pas de compte?",
+    "Create account": "Créer un compte",
+    "Login": "Connexion",
+    "Forgot Password": "Mot de passe oublié?",
+    "or continue with": "ou continuer avec"
+  }
+}

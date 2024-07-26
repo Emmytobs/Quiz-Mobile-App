@@ -1,0 +1,30 @@
+{
+  "WelcomeScreen": {
+    "carousel": {
+      "slide-1": "Quiz Dash App helps you conquer your studies with ease.",
+      "slide-2": "Upload your study materials and let Dash organize them for efficient learning.",
+      "slide-3": "Create personalized quizzes from your study guides and track your progress.",
+      "slide-4": "Join study groups and compete with friends to ace your next exam!"
+    },
+    "terms": {
+      "prefix": "By clicking Get started, you agree to our"
+    },
+    "Terms of Service": "Terms of Service",
+    "Privacy Policy": "Privacy Policy",
+    "Get started": "Get started",
+    "Login": "Login"
+  },
+  "AuthScreens": {
+    "Full name": "Full name",
+    "Email": "Email",
+    "Password": "Password",
+    "Confirm Password": "Confirm Password",
+    "Create": "Create",
+    "Already have an account?": "Already have an account?",
+    "Don't have an account?": "Don't have an account?",
+    "Create account": "Create account",
+    "Login": "Login",
+    "Forgot Password": "Forgot Password?",
+    "or continue with": "or continue with"
+  }
+}

@@ -10,6 +10,8 @@ import { useColorScheme } from '~/lib/useColorScheme';
 import { PortalHost } from '@rn-primitives/portal';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { useFonts } from 'expo-font';
+import { getCurrentLocale, useLocale } from '~/stores/locale';
+import i18n from '~/assets/translations/i18n';
 
 const LIGHT_THEME: Theme = {
   dark: false,
@@ -31,6 +33,7 @@ SplashScreen.preventAutoHideAsync();
 export default function RootLayout() {
   const [isColorSchemeLoaded, setIsColorSchemeLoaded] = React.useState(false);
   const { colorScheme, isDarkColorScheme, setColorScheme } = useColorScheme()
+  const { locale, setLocale } = useLocale((state) => state)
 
   const [fontLoaded] = useFonts({
     Satoshi: require('../assets/fonts/Satoshi-Medium.otf'),
@@ -58,15 +61,27 @@ export default function RootLayout() {
       setIsColorSchemeLoaded(true);
     }
   }
-  loadColorScheme()
+
+  async function loadLocale() {
+    const currentLocale = await getCurrentLocale();
+    if (currentLocale != i18n.language) {
+      i18n.changeLanguage(currentLocale);
+    }
+    setLocale(currentLocale)
+  }
+  
+  React.useEffect(() => {
+    loadColorScheme();
+    loadLocale()
+  }, [])
 
   React.useEffect(() => {
-    if (fontLoaded && isColorSchemeLoaded) {
+    if (fontLoaded && isColorSchemeLoaded && locale) {
       SplashScreen.hideAsync();
     }
-  }, [fontLoaded, isColorSchemeLoaded]);
+  }, [locale, fontLoaded, isColorSchemeLoaded]);
 
-  if (!fontLoaded) {
+  if (!fontLoaded && !locale) {
     return null;
   }
 
@@ -76,15 +91,11 @@ export default function RootLayout() {
         <StatusBar style={isDarkColorScheme ? 'light' : 'dark'} />
         <Stack>
           <Stack.Screen
-            name="onboarding"
+            name="(onboarding)"
             options={{ headerShown: false }}
           />
           <Stack.Screen
             name="index"
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="(auth)"
             options={{ headerShown: false }}
           />
           <Stack.Screen

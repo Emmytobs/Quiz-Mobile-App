@@ -3,14 +3,17 @@ import React from 'react'
 import { Separator } from '~/components/ui/separator'
 import { useColorScheme } from '~/lib/useColorScheme'
 import { Text } from '~/components/ui/text'
+import { useTranslation } from 'react-i18next'
 
 const OAuthLoginButtons = () => {
   const { isDarkColorScheme } = useColorScheme()
+  const { t } = useTranslation("onboarding", { keyPrefix: "AuthScreens" });
+
   return (
     <View className="gap-y-8">
       <View className="flex flex-row items-center justify-center overflow-hidden">
         <Separator />
-        <Text className="mx-2 opacity-50">or continue with</Text>
+        <Text className="mx-2 opacity-50">{t("or continue with")}</Text>
         <Separator />
       </View>
       <View className="flex-row justify-center gap-x-8">
