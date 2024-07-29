@@ -27,6 +27,12 @@
     "Login": "Login",
     "Logging in": "Logging in",
     "Forgot Password": "Forgot Password?",
-    "or continue with": "or continue with"
+    "or continue with": "or continue with",
+    "Please enter your full name": "Please enter your full name",
+    "Please enter a valid email": "Please enter a valid email",
+    "Please enter your password": "Please enter your password",
+    "Passwords don't match": "Passwords don't match",
+    "Please re-enter your password": "Please re-enter your password",
+    "Password must contain at least 4 characters": "Password must contain at least 4 characters"
   }
 }

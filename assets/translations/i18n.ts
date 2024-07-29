@@ -2,6 +2,7 @@ import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import common from './common';
 import onboarding from './screens/onboarding';
+import { defaultLocale } from '~/lib/constants';
 
 const resources = {
   en: { 
@@ -25,8 +26,7 @@ i18n
   .init({
     compatibilityJSON: 'v3',
     resources,
-    // ns: ['onboarding'],
-    lng: 'en',// TODO: Set default lang to user's device lang.
+    lng: defaultLocale,
   });
 
 export default i18n;

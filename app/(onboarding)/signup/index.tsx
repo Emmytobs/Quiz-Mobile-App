@@ -8,42 +8,24 @@ import { Text } from "~/components/ui/text";
 import { Link, router } from "expo-router";
 import { useColorScheme } from "~/lib/useColorScheme";
 import { cn } from "~/lib/utils";
-import useAxios from "~/lib/hooks/axios";
+import useAxios from "~/lib/hooks/useAxios";
 import { Controller, useForm } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
 import Toast from "react-native-toast-message";
 import { useTranslation } from "react-i18next";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod"
 import { useSession } from "~/stores/session";
+import * as EmailValidator from 'email-validator';
 
 const SignupScreen = () => {
   const { isDarkColorScheme } = useColorScheme()
   const { t } = useTranslation("onboarding", { keyPrefix: "AuthScreens" });
-
-  const signupSchema = z.object({
-    fullName: z.string({
-      message: "Please enter your full name"
-    }),
-    email: z.string().email({
-      message: "Please enter your email",
-    }),
-    password: z
-      .string({ 
-        message: "Please enter your password",
-      })
-      .min(4, { message: "Password must contain at least 4 characters" }),
-    confirmPassword: z
-      .string({ message: "Please re-enter your password" })
-  })
-
   const axios = useAxios();
   const setSession = useSession(({ setSession }) => setSession)
   const defaultFormValues = {
-    fullName: "Jane Doe",
-    email: "test5@email.com",
-    password: "newpassword",
-    confirmPassword: "newpassword",
+    fullName: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
   }
   const {
     control,
@@ -51,7 +33,6 @@ const SignupScreen = () => {
     formState: { errors }
   } = useForm({
     defaultValues: defaultFormValues,
-    resolver: zodResolver(signupSchema)
   })
   
   const { data, error, isPending, mutate: signupUser } = useMutation({
@@ -75,22 +56,16 @@ const SignupScreen = () => {
 
   useEffect(() => {
     if (error) {
-      console.log(error)
       Toast.show({
         type: 'error',
         text1: error.message
       });
     }
     if (data) {
-      console.log(data.data)
       setSession(data.data)
       router.replace("(tabs)/home")
     }
   }, [data, error]);
-
-  // useEffect(() => {
-  //   console.log(errors)
-  // }, [errors])
   
   return (
     <SafeAreaView>
@@ -99,13 +74,15 @@ const SignupScreen = () => {
           <Controller 
             control={control}
             rules={{
-              required: true
+              required: {
+                message: t("Please enter your full name"),
+                value: true
+              },
             }}
             name="fullName"
             render={({ field: { onChange, onBlur, value } }) => (
               <Input
                 label={t("Full name")}
-                className="lowercase"
                 labelFor="fullName"
                 aria-labelledbyledBy="fullName"
                 aria-errormessage="inputError"
@@ -121,7 +98,15 @@ const SignupScreen = () => {
           <Controller 
             control={control}
             rules={{
-              required: true
+              required: {
+                message: t("Please enter a valid email"),
+                value: true
+              },
+              validate: {
+                invalidEmail: (value) => {
+                  return EmailValidator.validate(value) || t("Please enter a valid email")
+                }
+              }
             }}
             name="email"
             render={({ field: { onChange, onBlur, value } }) => (
@@ -142,7 +127,14 @@ const SignupScreen = () => {
           <Controller 
             control={control}
             rules={{
-              required: true,
+              required: {
+                message: t("Please enter your password"),
+                value: true,
+              },
+              minLength: {
+                message: t("Password must contain at least 4 characters"),
+                value: 4
+              }
             }}
             name="password"
             render={({ field: { onChange, onBlur, value } }) => (
@@ -164,10 +156,13 @@ const SignupScreen = () => {
           <Controller 
             control={control}
             rules={{
-              required: true,
+              required: {
+                message: t("Please re-enter your password"),
+                value: true,
+              },
               validate: {
                 passwordMismatch: (value, formValues) => {
-                  return value === formValues.password
+                  return value === formValues.password || t("Passwords don't match")
                 }
               }
             }}

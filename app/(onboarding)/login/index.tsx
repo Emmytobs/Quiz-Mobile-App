@@ -12,30 +12,18 @@ import { useTranslation } from "react-i18next";
 import { useMutation } from "@tanstack/react-query";
 import { Controller, useForm } from "react-hook-form";
 import Toast from "react-native-toast-message";
-import useAxios from "~/lib/hooks/axios";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod"
+import useAxios from "~/lib/hooks/useAxios";
 import { Session, useSession } from "~/stores/session";
-
-const loginSchema = z.object({
-  email: z.string().email({
-    message: "Please enter your email",
-  }),
-  password: z
-    .string({ 
-      message: "Please enter your password",
-    })
-    .min(4, { message: "Password must contain at least 4 characters" }),
-})
+import * as EmailValidator from 'email-validator';
 
 const LoginScreen = () => {
   const { isDarkColorScheme } = useColorScheme()
-  const { t } = useTranslation("onboarding", { keyPrefix: "AuthScreens" });
+  const { t } = useTranslation("onboarding", { keyPrefix: "AuthScreens" });  
   const axios = useAxios();
   const setSession = useSession(({ setSession }) => setSession)
   const defaultFormValues = {
-    email: "test3@email1.com",
-    password: "newpassword",
+    email: "",
+    password: "",
   }
   const {
     control,
@@ -43,7 +31,6 @@ const LoginScreen = () => {
     formState: { errors }
   } = useForm({
     defaultValues: defaultFormValues,
-    resolver: zodResolver(loginSchema)
   })
   
   const { data, error, isPending, mutate: loginUser } = useMutation({
@@ -63,14 +50,12 @@ const LoginScreen = () => {
 
   useEffect(() => {
     if (error) {
-      console.log(error)
       Toast.show({
         type: 'error',
         text1: error.message
       });
     }
     if (data) {
-      // console.log(data)
       setSession(data.data)
       router.replace("(tabs)/home")
     }
@@ -82,7 +67,15 @@ const LoginScreen = () => {
         <Controller 
           control={control}
           rules={{
-            required: true
+            required: {
+              message: t("Please enter a valid email"),
+              value: true
+            },
+            validate: {
+              invalidEmail: (value) => {
+                return EmailValidator.validate(value) || t("Please enter a valid email")
+              }
+            }
           }}
           name="email"
           render={({ field: { onChange, onBlur, value } }) => (
@@ -104,7 +97,10 @@ const LoginScreen = () => {
         <Controller
           control={control}
           rules={{
-            required: true
+            required: {
+              message: t("Please enter your password"),
+              value: true,
+            },
           }}
           name="password"
           render={({ field: { onChange, onBlur, value } }) => (

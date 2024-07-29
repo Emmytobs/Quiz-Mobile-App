@@ -27,6 +27,12 @@
     "Login": "Connexion",
     "Logging in": "Connexion en cours",
     "Forgot Password": "Mot de passe oublié?",
-    "or continue with": "ou continuer avec"
+    "or continue with": "ou continuer avec",
+    "Please enter your full name": "Veuillez entrer votre nom complet",
+    "Please enter a valid email": "Veuillez entrer une adresse e-mail valide",
+    "Please enter your password": "Veuillez entrer votre mot de passe",
+    "Passwords don't match": "Les mots de passe ne correspondent pas",
+    "Please re-enter your password": "Veuillez ressaisir votre mot de passe",
+    "Password must contain at least 4 characters": "Le mot de passe doit contenir au moins 4 caractères"
   }
 }

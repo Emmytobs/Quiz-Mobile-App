@@ -1,9 +1,11 @@
 import axios, { AxiosInstance } from 'axios';
+import { useLocale } from '~/stores/locale';
 
 function useAxios(): AxiosInstance {
+	const locale = useLocale((state) => state.locale)
 	const headers = {
 		"X-App-Version": "0.1",
-		"Accept-Language": "en" // TODO: Make this value dynamic based on the user's selected locale
+		"Accept-Language": locale
 	};
 	
 	const axiosInstance = axios.create({
