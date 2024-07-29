@@ -4,7 +4,7 @@
       "slide-1": "L'application Quiz Dash vous aide à conquérir vos études avec facilité.",
       "slide-2": "Téléchargez vos documents d'étude et laissez Dash les organiser pour un apprentissage efficace.",
       "slide-3": "Créez des quiz personnalisés à partir de vos guides d'étude et suivez vos progrès.",
-      "slide-4": "Rejoignez des groupes d'étude et rivalisez avec des amis pour réussir votre prochain examen!"
+      "slide-4": "Rejoignez des groupes d'étude et rivalisez avec vos amis pour réussir votre prochain examen!"
     },
     "terms": {
       "prefix": "En cliquant sur Commencer, vous acceptez nos"
@@ -16,15 +16,23 @@
   },
   "AuthScreens": {
     "Full name": "Nom complet",
-    "Email": "Email",
+    "Email": "E-mail",
     "Password": "Mot de passe",
     "Confirm Password": "Confirmer le mot de passe",
     "Create": "Créer",
     "Already have an account?": "Vous avez déjà un compte?",
     "Don't have an account?": "Vous n'avez pas de compte?",
     "Create account": "Créer un compte",
+    "Creating": "Création",
     "Login": "Connexion",
+    "Logging in": "Connexion en cours",
     "Forgot Password": "Mot de passe oublié?",
-    "or continue with": "ou continuer avec"
+    "or continue with": "ou continuer avec",
+    "Please enter your full name": "Veuillez entrer votre nom complet",
+    "Please enter a valid email": "Veuillez entrer une adresse e-mail valide",
+    "Please enter your password": "Veuillez entrer votre mot de passe",
+    "Passwords don't match": "Les mots de passe ne correspondent pas",
+    "Please re-enter your password": "Veuillez ressaisir votre mot de passe",
+    "Password must contain at least 4 characters": "Le mot de passe doit contenir au moins 4 caractères"
   }
 }

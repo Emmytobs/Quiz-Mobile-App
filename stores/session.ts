@@ -1,0 +1,54 @@
+import { create } from "zustand";
+import { createJSONStorage, persist } from "zustand/middleware";
+import { StateStorage } from "~/lib/stateStorage";
+
+type SessionStore = {
+  session: Session | null
+  setSession: (session: Session) => void 
+  reset: () => void 
+}
+
+export interface Session {
+  token: string;
+  refresh: string;
+  user: User
+}
+
+interface User {
+  first_name: string,
+  last_name: string,
+  email: string,
+  is_verified: boolean,
+  avatar: string | null,
+  is_student: boolean,
+  is_active: boolean
+}
+
+const initialState = null;
+
+const deleteSession = async () => {
+  StateStorage.removeItem('session')
+}
+
+const useSession = create( 
+  persist<SessionStore>(
+    (set) => ({
+      session: initialState,
+      setSession: (session: Session) => {
+        set({ session });
+      },
+      reset: () => {
+        set({ session: initialState });
+      }
+    }),
+    {
+      name: 'session',
+      storage: createJSONStorage(() => StateStorage)
+    }
+  )
+)
+
+export {
+  useSession,
+  deleteSession
+}

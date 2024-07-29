@@ -1,8 +1,9 @@
 import { create } from "zustand";
-import { createJSONStorage, persist, StateStorage } from "zustand/middleware";
+import { createJSONStorage, persist } from "zustand/middleware";
 import { getLocales } from 'expo-localization';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { defaultLocale, supportedLocales } from "~/lib/constants";
+import { StateStorage } from "~/lib/stateStorage";
 
 type Locale = typeof supportedLocales[number]
 interface LocaleStore {
@@ -25,21 +26,6 @@ async function getCurrentLocale(): Promise<Locale> {
   return currentLocale;
 }
 
-const asyncStorage: StateStorage = {
-  async setItem(name, value) {
-    const formattedValue = JSON.parse(value)['state'][name] // TODO: Figure out why Zustand calls setItem with the object `{state: { [name]: [value] }}`
-    if (formattedValue === null) return; // TODO: setItem gets called upon initial render. Figure out why
-    await AsyncStorage.setItem(name, formattedValue)
-  },
-  async getItem(name) {
-    const item = (await AsyncStorage.getItem(name)) 
-    return item
-  },
-  // not implemented until we need to remove the locale from async storage
-  removeItem(name) {
-  },
-}
-
 const useLocale = create( 
   persist<LocaleStore>(
     (set) => ({
@@ -50,7 +36,7 @@ const useLocale = create(
     }),
     {
       name: 'locale',
-      storage: createJSONStorage(() => asyncStorage)
+      storage: createJSONStorage(() => StateStorage)
     }
   )
 )

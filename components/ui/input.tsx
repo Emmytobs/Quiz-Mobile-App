@@ -3,6 +3,7 @@ import { Pressable, TextInput, View } from 'react-native';
 import { cn } from '~/lib/utils';
 import { Label } from './label';
 import { Eye, EyeOff } from '~/lib/icons';
+import { Text } from './text';
 
 type TextInputType = typeof TextInput
 type CustomTextInputProps = React.ComponentPropsWithoutRef<TextInputType> & {
@@ -14,6 +15,14 @@ type CustomTextInputProps = React.ComponentPropsWithoutRef<TextInputType> & {
    * This should be added if `label` is added. The value should be the same value of `aria-labelledbyledBy`
    */
   labelFor?: string
+  /**
+   * This can be used to display cues to the user that the input value is invalid
+   */
+  hasError?: boolean
+  /**
+   * This can be used to display an error message when the input value is invalid
+   */
+  errorMessage?: string
 }
 
 const Input = React.forwardRef<
@@ -45,6 +54,7 @@ const Input = React.forwardRef<
           className={cn(
             'web:flex h-10 native:h-16 w-full rounded-md border border-input bg-secondary/50 px-3 web:py-2 text-base lg:text-sm native:text-base native:leading-[1.25] text-foreground placeholder:text-muted-foreground web:ring-offset-background file:border-0 file:bg-transparent file:font-medium web:focus-visible:outline-none web:focus-visible:ring-2 web:focus-visible:ring-ring web:focus-visible:ring-offset-2',
             props.editable === false && 'opacity-50 web:cursor-not-allowed',
+            props.hasError && 'border-red-500',
             className
           )}
           placeholderClassName={cn('text-muted-foreground', placeholderClassName)}
@@ -64,6 +74,11 @@ const Input = React.forwardRef<
           ) : null
         }
       </View>
+      {
+        props.errorMessage && props.hasError ?
+        <Text className="mt-[-3px] text-red-500">{props.errorMessage}</Text> : 
+        null
+      }
     </View>
   );
 });
