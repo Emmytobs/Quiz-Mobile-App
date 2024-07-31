@@ -7,8 +7,8 @@
     "dev:ios": "expo start -c --ios",
     "dev:web": "expo start -c --web",
     "dev:android": "expo start -c --android",
-    "android": "expo start -c --android",
-    "ios": "expo start -c --ios",
+    "android": "expo run:android",
+    "ios": "expo run:ios",
     "web": "expo start -c --web"
   },
   "dependencies": {
@@ -31,7 +31,7 @@
     "clsx": "^2.1.0",
     "email-validator": "^2.0.4",
     "expo": "^51.0.14",
-    "expo-dev-client": "~4.0.20",
+    "expo-dev-client": "~4.0.21",
     "expo-font": "^12.0.7",
     "expo-linking": "~6.3.1",
     "expo-localization": "~15.0.3",

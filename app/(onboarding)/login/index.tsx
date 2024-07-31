@@ -121,7 +121,7 @@ const LoginScreen = () => {
         />
 
         <Button onPress={handleSubmit(onSubmit)} disabled={isPending}>{isPending ? t("Logging in") : t("Login")}</Button>
-        <Link href="(auth)/reset-password" asChild>
+        <Link href="(onboarding)/reset-password" asChild>
           <Text className="w-fit ml-auto opacity-50">{t("Forgot Password")}</Text>
         </Link>
         <OAuthLoginButtons />
