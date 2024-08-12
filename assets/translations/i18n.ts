@@ -26,7 +26,7 @@ i18n
   .init({
     compatibilityJSON: 'v3',
     resources,
-    lng: defaultLocale,
+    lng: defaultLocale
   });
 
 export default i18n;

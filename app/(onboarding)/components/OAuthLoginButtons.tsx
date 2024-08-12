@@ -1,13 +1,15 @@
-import { View, Image } from 'react-native'
+import { View, Image, Platform } from 'react-native'
 import React from 'react'
 import { Separator } from '~/components/ui/separator'
 import { useColorScheme } from '~/lib/useColorScheme'
 import { Text } from '~/components/ui/text'
 import { useTranslation } from 'react-i18next'
+import LoginWithGoogle from './LoginWithGoogle'
 
 const OAuthLoginButtons = () => {
   const { isDarkColorScheme } = useColorScheme()
   const { t } = useTranslation("onboarding", { keyPrefix: "AuthScreens" });
+  
 
   return (
     <View className="gap-y-8">
@@ -17,12 +19,15 @@ const OAuthLoginButtons = () => {
         <Separator />
       </View>
       <View className="flex-row justify-center gap-x-8">
-        <Image source={require("~/assets/images/screens/google.png")} />
+        <LoginWithGoogle />
         <Image source={require("~/assets/images/screens/facebook.png")} />
         {
-          isDarkColorScheme ?
-          <Image source={require("~/assets/images/screens/apple-light.png")} /> :
-          <Image source={require("~/assets/images/screens/apple.png")} />
+          Platform.OS === 'ios' ?
+            (
+              isDarkColorScheme ?
+              <Image source={require("~/assets/images/screens/apple-light.png")} /> :
+              <Image source={require("~/assets/images/screens/apple.png")} />
+            ) : null
         }
       </View>
     </View>

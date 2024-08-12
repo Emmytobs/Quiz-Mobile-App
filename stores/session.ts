@@ -26,10 +26,6 @@ interface User {
 
 const initialState = null;
 
-const deleteSession = async () => {
-  StateStorage.removeItem('session')
-}
-
 const useSession = create( 
   persist<SessionStore>(
     (set) => ({
@@ -49,6 +45,5 @@ const useSession = create(
 )
 
 export {
-  useSession,
-  deleteSession
+  useSession
 }
