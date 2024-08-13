@@ -13,7 +13,7 @@ import { useMutation } from "@tanstack/react-query";
 import { Controller, useForm } from "react-hook-form";
 import Toast from "react-native-toast-message";
 import useAxios from "~/lib/hooks/useAxios";
-import { Session, useSession } from "~/stores/session";
+import { type Session, useSession } from "~/stores/session";
 import * as EmailValidator from 'email-validator';
 
 const LoginScreen = () => {
@@ -37,9 +37,12 @@ const LoginScreen = () => {
     mutationFn: async (loginCredentials: typeof defaultFormValues) => {
       try {
         const response = await axios.post<Session>(`/authentication/login/`, loginCredentials)
+        console.log(response);
         return response
-      } catch (error) {
-        throw new Error(error as any);
+      // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+      } catch (error: any) {
+        console.log(error);
+        throw new Error(error);
       }
     }
   })
@@ -48,6 +51,7 @@ const LoginScreen = () => {
     loginUser(data);
   }
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     if (error) {
       Toast.show({
