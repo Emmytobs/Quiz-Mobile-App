@@ -4,7 +4,7 @@ import { Separator } from '~/components/ui/separator'
 import { useColorScheme } from '~/lib/useColorScheme'
 import { Text } from '~/components/ui/text'
 import { useTranslation } from 'react-i18next'
-import LoginWithGoogle from './LoginWithGoogle'
+// import LoginWithGoogle from './LoginWithGoogle'
 
 const OAuthLoginButtons = () => {
   const { isDarkColorScheme } = useColorScheme()
@@ -19,7 +19,7 @@ const OAuthLoginButtons = () => {
         <Separator />
       </View>
       <View className="flex-row justify-center gap-x-8">
-        <LoginWithGoogle />
+        {/* <LoginWithGoogle /> */}
         <Image source={require("~/assets/images/screens/facebook.png")} />
         {
           Platform.OS === 'ios' ?

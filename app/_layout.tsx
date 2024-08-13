@@ -76,12 +76,13 @@ export default function RootLayout() {
 
   async function loadSession() {
     const session = await StateStorage.getItem<Session>('session')
-    if (!!session) {
+    if (session) {
       setSession(session);
     }
   }
   
-  React.useEffect(() => {
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+    React.useEffect(() => {
     loadColorScheme();
     loadLocale();
     loadSession();
