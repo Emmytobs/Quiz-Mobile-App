@@ -37,11 +37,9 @@ const LoginScreen = () => {
     mutationFn: async (loginCredentials: typeof defaultFormValues) => {
       try {
         const response = await axios.post<Session>(`/authentication/login/`, loginCredentials)
-        console.log(response);
         return response
       // biome-ignore lint/suspicious/noExplicitAny: <explanation>
       } catch (error: any) {
-        console.log(error);
         throw new Error(error);
       }
     }

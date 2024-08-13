@@ -46,11 +46,6 @@ export default function RootLayout() {
   async function loadColorScheme() {
     try {
       const theme = await AsyncStorage.getItem('theme');
-      // For web only:
-      // if (Platform.OS === 'web') {
-      //   // Adds the background color to the html element to prevent white background on overscroll.
-      //   document.documentElement.classList.add('bg-background');
-      // }
       if (!theme) {
         // TODO: Save the theme when there's a color mode switcher
         // await AsyncStorage.setItem('theme', colorScheme);
