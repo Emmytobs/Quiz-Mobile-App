@@ -3,7 +3,7 @@ import { Stack } from 'expo-router'
 
 const HomeScreenLayout = () => {
   return (
-    <Stack>
+    <Stack screenOptions={{ headerShown: false }}>
       <Stack.Screen 
         name='index'
       />

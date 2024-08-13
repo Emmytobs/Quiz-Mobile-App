@@ -14,7 +14,7 @@ export interface Session {
   user: User
 }
 
-interface User {
+export interface User {
   first_name: string,
   last_name: string,
   email: string,

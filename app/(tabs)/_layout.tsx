@@ -7,7 +7,7 @@ const CustomTabBar = (props: any) => {
 
 const TabsLayout = () => {
   return (
-    <Tabs initialRouteName='home'>
+    <Tabs initialRouteName='home' screenOptions={{ headerShown: false }}>
       <Tabs.Screen 
         name='home'
         options={{

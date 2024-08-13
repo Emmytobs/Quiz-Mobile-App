@@ -63,7 +63,7 @@ export default function RootLayout() {
 
   async function loadLocale() {
     const currentLocale = await getCurrentLocale();
-    if (currentLocale != i18n.language) {
+    if (currentLocale !== i18n.language) {
       i18n.changeLanguage(currentLocale);
     }
     setLocale(currentLocale)
