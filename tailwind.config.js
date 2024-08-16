@@ -52,6 +52,7 @@ module.exports = {
       fontFamily: {
         satoshi: ["Satoshi"],
         interMedium: ["InterMedium"],
+        ManropeSemiBold: ["ManropeSemiBold"],
       },
       borderWidth: {
         hairline: hairlineWidth(),

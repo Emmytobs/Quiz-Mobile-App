@@ -42,6 +42,7 @@ export default function RootLayout() {
   const [fontLoaded] = useFonts({
     Satoshi: require("../assets/fonts/Satoshi-Medium.otf"),
     InterMedium: require("../assets/fonts/Inter-Medium.ttf"),
+    ManropeSemiBold: require("../assets/fonts/Manrope-SemiBold.ttf"),
   });
 
   async function loadColorScheme() {
