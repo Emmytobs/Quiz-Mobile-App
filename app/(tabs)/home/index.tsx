@@ -8,6 +8,7 @@ import { useColorScheme } from "~/lib/useColorScheme";
 import { Input } from "~/components/ui/input";
 import { useTranslation } from "react-i18next";
 import * as Progress from "react-native-progress";
+import CameraIcon from "~/components/icons/Camera";
 
 export default function HomeScreen() {
   return (
@@ -16,7 +17,6 @@ export default function HomeScreen() {
       <Search />
       <Activities />
       <QuickActions />
-      <Categories />
     </ScrollView>
   );
 }
@@ -81,11 +81,7 @@ function Search() {
       <View
         className={`${isDarkColorScheme ? "bg-[#161616]" : "bg-[#f6f6f6]"} w-2/12 rounded-lg items-center justify-center`}
       >
-        <Filter
-          color={isDarkColorScheme ? "#fff" : "#0F0F0F"}
-          size={20}
-          fill={isDarkColorScheme ? "#fff" : "#0F0F0F"}
-        />
+        <CameraIcon />
       </View>
     </View>
   );
@@ -189,63 +185,5 @@ function QuickAction({
         {title}
       </Text>
     </Pressable>
-  );
-}
-
-const CategoriesData = [
-  {
-    image:
-      "https://images.pexels.com/photos/256262/pexels-photo-256262.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-    title: "Sciences",
-  },
-  {
-    image:
-      "https://images.pexels.com/photos/1209843/pexels-photo-1209843.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-    title: "Arts",
-  },
-  {
-    image:
-      "https://images.pexels.com/photos/73910/mars-mars-rover-space-travel-robot-73910.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-    title: "Technology",
-  },
-  {
-    image:
-      "https://images.pexels.com/photos/3729557/pexels-photo-3729557.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-    title: "Mathematics",
-  },
-];
-
-function Categories() {
-  const { t } = useTranslation("dashboard", { keyPrefix: "DashboardScreens" });
-  const { isDarkColorScheme } = useColorScheme();
-
-  return (
-    <View className="">
-      <Title title={t("Categories")} />
-
-      <FlatList
-        contentContainerClassName="flex-1 pt-5 pb-20"
-        scrollEnabled={false}
-        showsVerticalScrollIndicator={false}
-        data={CategoriesData}
-        numColumns={2}
-        ItemSeparatorComponent={() => (
-          <View className="w-4" style={{ height: 16 }} />
-        )}
-        renderItem={({ item, index }) => (
-          <View
-            className={`max-h-48 flex-1 w-full items-center ${isDarkColorScheme ? "bg-[#161616]" : "bg-[#f6f6f6]"} rounded-lg shadow-md shadow-black/20 overflow-hidden`}
-            style={{ marginRight: index % 2 === 0 ? 10 : 0 }}
-          >
-            <Image
-              source={{ uri: item.image }}
-              style={{ width: "100%", height: "80%" }}
-              resizeMode="cover"
-            />
-            <Text className="leading-normal tracking-wide">{item.title}</Text>
-          </View>
-        )}
-      />
-    </View>
   );
 }

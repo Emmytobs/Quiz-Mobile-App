@@ -1,25 +1,18 @@
 import { Tabs } from "expo-router";
-import {
-  Group,
-  Home,
-  LibraryBig,
-  Plus,
-  SettingsIcon,
-} from "lucide-react-native";
+import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import React from "react";
-import { Pressable, Settings, View } from "react-native";
+import { Pressable, View } from "react-native";
+import GroupsIcon from "~/components/icons/Groups";
+import HomeIcon from "~/components/icons/Home";
+import LibraryIcon from "~/components/icons/Library";
+import SettingsIcon from "~/components/icons/Settings";
 import { useColorScheme } from "~/lib/useColorScheme";
-
-const CustomTabBar = (props: any) => {
-  return null;
-};
 
 export default function TabsLayout() {
   const { isDarkColorScheme } = useColorScheme();
 
   return (
-    <>
-      <ActionButton />
+    <View className="flex-1 relative">
       <Tabs
         initialRouteName="home"
         screenOptions={{
@@ -34,6 +27,7 @@ export default function TabsLayout() {
             paddingTop: 10,
             justifyContent: "center",
           },
+
           tabBarInactiveTintColor: isDarkColorScheme ? "#242424" : "#E8E8E8",
           tabBarActiveTintColor: isDarkColorScheme ? "#EF9303" : "#FCA110",
           tabBarIconStyle: {
@@ -51,7 +45,7 @@ export default function TabsLayout() {
           options={{
             title: "Home",
             tabBarIcon: ({ color, focused, size }) => (
-              <Home color={color} fill={color} size={size} />
+              <HomeIcon focused={focused} />
             ),
           }}
         />
@@ -60,11 +54,18 @@ export default function TabsLayout() {
           options={{
             title: "Library",
             tabBarIcon: ({ color, focused, size }) => (
-              <LibraryBig
-                color={color}
-                // fill={focused ? color : undefined}
-                size={size}
-              />
+              <LibraryIcon focused={focused} />
+            ),
+          }}
+        />
+        <Tabs.Screen
+          name="upload"
+          options={{
+            title: "",
+            tabBarIcon: ({ color, focused, size }) => (
+              <View className="pb-14">
+                <ActionButton />
+              </View>
             ),
           }}
         />
@@ -73,11 +74,7 @@ export default function TabsLayout() {
           options={{
             title: "Groups",
             tabBarIcon: ({ color, focused, size }) => (
-              <Group
-                color={color}
-                fill={focused ? color : undefined}
-                size={size}
-              />
+              <GroupsIcon focused={focused} />
             ),
           }}
         />
@@ -86,26 +83,28 @@ export default function TabsLayout() {
           options={{
             title: "Settings",
             tabBarIcon: ({ color, focused, size }) => (
-              <SettingsIcon
-                color={color}
-                fill={focused === true ? color : undefined}
-                size={size}
-              />
+              <SettingsIcon focused={focused} />
             ),
           }}
         />
       </Tabs>
-    </>
+    </View>
   );
 }
 
 function ActionButton() {
+  const { isDarkColorScheme } = useColorScheme();
+
   return (
     <Pressable
-      className="rounded-full items-center justify-center h-20 w-20 bg-[#FCA110] border-8 border-[#0D0D0D absolute bottom-14 left-44 z-50"
+      className={`rounded-full items-center justify-center h-[65px] w-[65px] bg-[#FCA110] border-[6px] ${isDarkColorScheme ? "border-[#0D0D0D]" : "border-white"}`}
       onPress={() => {}}
     >
-      <Plus color={"#0D0D0D"} fill={"#0D0D0D"} />
+      <FontAwesome5
+        name="plus"
+        size={24}
+        color={isDarkColorScheme ? "#242424" : "#fff"}
+      />
     </Pressable>
   );
 }
