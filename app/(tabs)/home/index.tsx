@@ -22,6 +22,7 @@ import { getActivities } from "~/services/dashboard";
 import { useQuery } from "@tanstack/react-query";
 import type { Activity } from "~/types/dashboard";
 import Toast from "react-native-toast-message";
+import { useRouter } from "expo-router";
 
 const studyTips: any[] = [
   {
@@ -85,6 +86,7 @@ function Title({ title }: { title: string }) {
 function Header() {
   const { isDarkColorScheme } = useColorScheme();
   const user = useSession((state) => state.session?.user);
+  const router = useRouter();
 
   return (
     <View className="flex-row items-center mt-5">
@@ -99,8 +101,9 @@ function Header() {
         </AvatarPrimitive.Fallback>
       </AvatarPrimitive.Root>
       <Text className="font-extrabold">Hi {user?.first_name},</Text>
-      <View
+      <Pressable
         className={`rounded-full ml-auto p-3 relative ${isDarkColorScheme ? "bg-[#161616]" : "bg-[#f6f6f6]"}`}
+        onPress={() => router.push("/(notifications)")}
       >
         <Bell
           color={isDarkColorScheme ? "#fff" : "#0F0F0F"}
@@ -110,7 +113,7 @@ function Header() {
         <View className="rounded-full bg-[#FCA110] items-center justify-center h-4 w-4 border border-white absolute right-3 top-2">
           <Text className="text-[8px] text-white text-center">3</Text>
         </View>
-      </View>
+      </Pressable>
     </View>
   );
 }
@@ -228,10 +231,11 @@ function Activities() {
   }
 
   if (status === "error") {
-    return Toast.show({
+    Toast.show({
       type: "error",
       text1: error.message,
     });
+    return null;
   }
 
   if (!data || !data.length) {
