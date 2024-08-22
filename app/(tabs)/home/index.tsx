@@ -1,8 +1,14 @@
 import React from "react";
-import { FlatList, Image, Pressable, ScrollView, View } from "react-native";
+import {
+  FlatList,
+  Pressable,
+  ScrollView,
+  View,
+  ViewabilityConfig,
+} from "react-native";
 import { Text } from "~/components/ui/text";
 import * as AvatarPrimitive from "@rn-primitives/avatar";
-import { Bell, Filter, SearchIcon } from "lucide-react-native";
+import { Bell, SearchIcon } from "lucide-react-native";
 import { useSession } from "~/stores/session";
 import { useColorScheme } from "~/lib/useColorScheme";
 import { Input } from "~/components/ui/input";
@@ -10,13 +16,48 @@ import { useTranslation } from "react-i18next";
 import * as Progress from "react-native-progress";
 import CameraIcon from "~/components/icons/Camera";
 
+const hasActivities = true;
+const studyTips: any[] = [
+  {
+    id: 1,
+    title: "Stay focused",
+    description: "Set specific study times and prioritize your tasks",
+    bgColor: "bg-[#FDB704]",
+  },
+  {
+    id: 2,
+    title: "Take breaks",
+    description: "Give yourself a break when you feel overwhelmed",
+    bgColor: "bg-[##FBC70E4D]",
+  },
+  {
+    id: 3,
+    title: "Review materials",
+    description: "Review your study materials before class",
+    bgColor: "bg-[##11BA734D]",
+  },
+  {
+    id: 4,
+    title: "Set reminders",
+    description: "Schedule notifications for study breaks",
+    bgColor: "bg-[#EF93034D]",
+  },
+  {
+    id: 5,
+    title: "Practice active recall",
+    description: "Use active recall exercises to help you recall information",
+    bgColor: "bg-[#EF9303]",
+  },
+];
+
 export default function HomeScreen() {
   return (
     <ScrollView className="p-4 pt-10" showsVerticalScrollIndicator={false}>
       <Header />
       <Search />
-      <Activities />
+      <StudyTips />
       <QuickActions />
+      {hasActivities ? <Activities /> : <NoActvity />}
     </ScrollView>
   );
 }
@@ -24,8 +65,12 @@ export default function HomeScreen() {
 const AVATAR_URI = "https://github.com/mrzachnugent.png";
 
 function Title({ title }: { title: string }) {
+  const { isDarkColorScheme } = useColorScheme();
+
   return (
-    <Text className="font-interMedium text-md font-medium tracking-wide leading-normal">
+    <Text
+      className={`font-interMedium text-md font-medium tracking-wide leading-normal ${isDarkColorScheme ? "text-white" : "text-black"}`}
+    >
       {title}
     </Text>
   );
@@ -36,7 +81,7 @@ function Header() {
   const user = useSession((state) => state.session?.user);
 
   return (
-    <View className="flex-row items-center">
+    <View className="flex-row items-center mt-5">
       <AvatarPrimitive.Root alt="Avatar" className="mr-3">
         <AvatarPrimitive.Image
           source={{ uri: AVATAR_URI }}
@@ -87,54 +132,6 @@ function Search() {
   );
 }
 
-function Activities() {
-  const { t } = useTranslation("dashboard", { keyPrefix: "DashboardScreens" });
-
-  return (
-    <View className="w-full pt-4">
-      <Title title={t("Activities")} />
-
-      <FlatList
-        contentContainerClassName="my-4 gap-x-4"
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        data={["Hello", "Hi", "Hiii"]}
-        renderItem={({ item }) => <Activity />}
-      />
-    </View>
-  );
-}
-
-function Activity() {
-  const { t } = useTranslation("dashboard", { keyPrefix: "DashboardScreens" });
-  const { isDarkColorScheme } = useColorScheme();
-
-  return (
-    <View className="w-72 bg-[#FDBE1D] rounded-lg p-4 pt-6">
-      <Text className="text-md leading-normal tracking-wide font-medium">
-        {t("Last Quiz")}
-      </Text>
-      <Text className="leading-normal tracking-wide">
-        Introduction to Biology
-      </Text>
-      <View className="mt-4">
-        <Text className="text-sm leading-normal tracking-wide font-medium mb-3">
-          {t("You scored")} 8/10
-        </Text>
-        <Progress.Bar
-          animated={false}
-          progress={0.7}
-          width={null}
-          height={4}
-          color={isDarkColorScheme ? "#fff" : "#161616"}
-          unfilledColor={isDarkColorScheme ? "#161616" : "#fff"}
-          borderWidth={0}
-        />
-      </View>
-    </View>
-  );
-}
-
 function QuickActions() {
   const { t } = useTranslation("dashboard", { keyPrefix: "DashboardScreens" });
 
@@ -145,17 +142,17 @@ function QuickActions() {
       <View className="flex-row items-center justify-center gap-2 min-w-full my-4">
         <QuickAction
           title={t("Start Quiz")}
-          bgColor="bg-[#FBCD27]"
+          bgColor="bg-[#FBC70E4D]"
           onPress={() => {}}
         />
         <QuickAction
           title={t("Study Materials")}
-          bgColor="bg-[#13D282]"
+          bgColor="bg-[#11BA734D]"
           onPress={() => {}}
         />
         <QuickAction
           title={t("Create Group")}
-          bgColor="bg-[#FCA110]"
+          bgColor="bg-[#EF93034D]"
           onPress={() => {}}
         />
       </View>
@@ -176,14 +173,173 @@ function QuickAction({
 
   return (
     <Pressable
-      className={`rounded-lg shadow-sm shadow-black/40 items-center justify-center px-4 h-16 ${bgColor} flex-1`}
+      className={`rounded-xl items-center justify-center px-4 h-16 ${bgColor} flex-1`}
       onPress={onPress}
     >
       <Text
-        className={`${isDarkColorScheme ? "#fff" : "#161616"} text-center leading-normal tracking-wide text-sm font-bold`}
+        className={`${isDarkColorScheme ? "#fff" : "#0F0F0F"} text-center leading-normal tracking-wide text-sm font-medium`}
       >
         {title}
       </Text>
     </Pressable>
+  );
+}
+
+function NoActvity() {
+  const { t } = useTranslation("dashboard", { keyPrefix: "DashboardScreens" });
+
+  return (
+    <View className="w-full pt-4">
+      <Title title={t("Activities")} />
+
+      <View className="my-4">
+        <ActivityCard bgColor="bg-[#D9D9D9]">
+          <Text className="text-md leading-normal tracking-wide font-medium text-black">
+            {t("No recent activities yet")}
+          </Text>
+          <Text className="my-6 leading-normal tracking-wider font-normal text-sm text-black w-11/12">
+            {t(
+              "When you engage in different activities, your recent activities will appear here"
+            )}
+          </Text>
+        </ActivityCard>
+      </View>
+    </View>
+  );
+}
+
+function Activities() {
+  const { t } = useTranslation("dashboard", { keyPrefix: "DashboardScreens" });
+
+  return (
+    <View className="w-full pt-4">
+      <Title title={t("Activities")} />
+
+      <FlatList
+        contentContainerClassName="my-4 gap-x-4"
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        data={["Hello", "Hi", "Hiii"]}
+        renderItem={({ item }) => <Activity />}
+      />
+    </View>
+  );
+}
+
+function ActivityCard({
+  bgColor,
+  children,
+}: {
+  bgColor: string;
+  children: React.ReactNode;
+}) {
+  return <View className={`${bgColor} rounded-xl p-4 pt-6`}>{children}</View>;
+}
+
+function Activity() {
+  const { t } = useTranslation("dashboard", { keyPrefix: "DashboardScreens" });
+  const { isDarkColorScheme } = useColorScheme();
+
+  return (
+    <ActivityCard bgColor="bg-[#FDBE1D]">
+      <View className="w-[22rem]">
+        <Text className="text-md leading-normal tracking-wide font-medium">
+          {t("Last Quiz")}
+        </Text>
+        <Text className="leading-normal tracking-wide">
+          Introduction to Biology
+        </Text>
+        <View className="mt-7">
+          <Text className="text-sm leading-normal tracking-wide font-medium mb-4">
+            {t("You scored")} 8/10
+          </Text>
+          <Progress.Bar
+            animated={false}
+            progress={0.7}
+            width={null}
+            height={4}
+            color={isDarkColorScheme ? "#fff" : "#161616"}
+            unfilledColor={isDarkColorScheme ? "#161616" : "#fff"}
+            borderWidth={0}
+          />
+        </View>
+      </View>
+    </ActivityCard>
+  );
+}
+
+function StudyTips() {
+  const { t } = useTranslation("dashboard", { keyPrefix: "DashboardScreens" });
+  const { isDarkColorScheme } = useColorScheme();
+
+  const [currentCarouselIndex, setCurrentCarouselIndex] = React.useState(0);
+  const carouselRef = React.useRef<any>(null);
+
+  const viewabilityConfig: ViewabilityConfig = {
+    itemVisiblePercentThreshold: 51,
+  };
+
+  const onViewableItemsChanged = React.useRef(({ viewableItems }: any) => {
+    if (viewableItems.length > 0) {
+      setCurrentCarouselIndex(viewableItems[0].index ?? 0);
+    }
+  });
+
+  return (
+    <View className="w-full pt-4">
+      <Title title={t("Study Tips")} />
+      <FlatList
+        contentContainerClassName="my-4"
+        ref={carouselRef}
+        onScrollToIndexFailed={() => {}}
+        viewabilityConfig={viewabilityConfig}
+        onViewableItemsChanged={onViewableItemsChanged.current}
+        data={studyTips}
+        renderItem={({ item }) => {
+          return (
+            <View className="mr-4 max-w-96">
+              <ActivityCard bgColor={item.bgColor}>
+                <Title title={item.title} />
+                <Text
+                  className={`my-6 leading-normal tracking-wider font-normal text-sm ${isDarkColorScheme ? "text-white" : "text-black"} w-11/12`}
+                >
+                  {item.description}
+                </Text>
+              </ActivityCard>
+            </View>
+          );
+        }}
+        showsHorizontalScrollIndicator={false}
+        horizontal
+      />
+
+      <View
+        style={{ width: "100%" }}
+        className="flex-row items-center justify-center gap-2 mt-4"
+      >
+        {studyTips.map((_, index) => {
+          return (
+            <Pressable
+              style={{
+                width: 8,
+                height: 8,
+                borderRadius: 50,
+                backgroundColor:
+                  currentCarouselIndex === index ? "#939393" : "#D9D9D9",
+              }}
+              key={index}
+              onPress={() => {
+                carouselRef.current.scrollToIndex({
+                  animated: true,
+                  index,
+                  viewOffset: 0,
+                  viewPosition: 0,
+                });
+              }}
+            />
+          );
+        })}
+      </View>
+    </View>
   );
 }
