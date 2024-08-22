@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
+  ActivityIndicator,
   FlatList,
   Pressable,
   ScrollView,
@@ -15,8 +16,11 @@ import { Input } from "~/components/ui/input";
 import { useTranslation } from "react-i18next";
 import * as Progress from "react-native-progress";
 import CameraIcon from "~/components/icons/Camera";
+import useAxios from "~/lib/hooks/useAxios";
+import { getActivities } from "~/services/dashboard";
+import { useQuery } from "@tanstack/react-query";
+import type { Activity } from "~/types/dashboard";
 
-const hasActivities = true;
 const studyTips: any[] = [
   {
     id: 1,
@@ -57,7 +61,7 @@ export default function HomeScreen() {
       <Search />
       <StudyTips />
       <QuickActions />
-      {hasActivities ? <Activities /> : <NoActvity />}
+      <Activities />
     </ScrollView>
   );
 }
@@ -185,7 +189,7 @@ function QuickAction({
   );
 }
 
-function NoActvity() {
+function NoActvity({ mode = "normal" }: { mode?: "normal" | "error" }) {
   const { t } = useTranslation("dashboard", { keyPrefix: "DashboardScreens" });
 
   return (
@@ -195,12 +199,14 @@ function NoActvity() {
       <View className="my-4">
         <ActivityCard bgColor="bg-[#D9D9D9]">
           <Text className="text-md leading-normal tracking-wide font-medium text-black">
-            {t("No recent activities yet")}
+            {mode === "error" ? t("Error!") : t("No recent activities yet")}
           </Text>
           <Text className="my-6 leading-normal tracking-wider font-normal text-sm text-black w-11/12">
-            {t(
-              "When you engage in different activities, your recent activities will appear here"
-            )}
+            {mode === "error"
+              ? t("An error occurred while fetching recent activities")
+              : t(
+                  "When you engage in different activities, your recent activities will appear here"
+                )}
           </Text>
         </ActivityCard>
       </View>
@@ -210,6 +216,24 @@ function NoActvity() {
 
 function Activities() {
   const { t } = useTranslation("dashboard", { keyPrefix: "DashboardScreens" });
+  const axios = useAxios();
+
+  const { data, status, error } = useQuery<Activity[]>({
+    queryKey: ["activities"],
+    queryFn: () => getActivities(axios),
+  });
+
+  if (status === "pending") {
+    return <ActivityIndicator size={"large"} color={"#FDB704"} />;
+  }
+
+  if (status === "error") {
+    return <NoActvity mode={"error"} />;
+  }
+
+  if (!data || !data.length) {
+    return <NoActvity />;
+  }
 
   return (
     <View className="w-full pt-4">
@@ -219,8 +243,8 @@ function Activities() {
         contentContainerClassName="my-4 gap-x-4"
         horizontal
         showsHorizontalScrollIndicator={false}
-        data={["Hello", "Hi", "Hiii"]}
-        renderItem={({ item }) => <Activity />}
+        data={data}
+        renderItem={({ item }) => <ActivityItem item={item} />}
       />
     </View>
   );
@@ -236,7 +260,7 @@ function ActivityCard({
   return <View className={`${bgColor} rounded-xl p-4 pt-6`}>{children}</View>;
 }
 
-function Activity() {
+function ActivityItem({ item }: { item: Activity }) {
   const { t } = useTranslation("dashboard", { keyPrefix: "DashboardScreens" });
   const { isDarkColorScheme } = useColorScheme();
 
@@ -246,16 +270,14 @@ function Activity() {
         <Text className="text-md leading-normal tracking-wide font-medium">
           {t("Last Quiz")}
         </Text>
-        <Text className="leading-normal tracking-wide">
-          Introduction to Biology
-        </Text>
+        <Text className="leading-normal tracking-wide">{item.title}</Text>
         <View className="mt-7">
           <Text className="text-sm leading-normal tracking-wide font-medium mb-4">
-            {t("You scored")} 8/10
+            {t("You scored")} {item.score}/{item.total_score}
           </Text>
           <Progress.Bar
             animated={false}
-            progress={0.7}
+            progress={(item.score / 100) * item.total_score}
             width={null}
             height={4}
             color={isDarkColorScheme ? "#fff" : "#161616"}

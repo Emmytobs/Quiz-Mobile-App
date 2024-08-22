@@ -9,7 +9,7 @@ type SessionStore = {
 }
 
 export interface Session {
-  token: string;
+  access: string;
   refresh: string;
   user: User
 }
