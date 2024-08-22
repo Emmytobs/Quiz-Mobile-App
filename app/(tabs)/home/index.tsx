@@ -1,4 +1,5 @@
-import React, { useEffect } from "react";
+import React from "react";
+// biome-ignore lint/style/useImportType: <explanation>
 import {
   ActivityIndicator,
   FlatList,
@@ -20,6 +21,7 @@ import useAxios from "~/lib/hooks/useAxios";
 import { getActivities } from "~/services/dashboard";
 import { useQuery } from "@tanstack/react-query";
 import type { Activity } from "~/types/dashboard";
+import Toast from "react-native-toast-message";
 
 const studyTips: any[] = [
   {
@@ -189,7 +191,7 @@ function QuickAction({
   );
 }
 
-function NoActvity({ mode = "normal" }: { mode?: "normal" | "error" }) {
+function NoActvity() {
   const { t } = useTranslation("dashboard", { keyPrefix: "DashboardScreens" });
 
   return (
@@ -199,14 +201,12 @@ function NoActvity({ mode = "normal" }: { mode?: "normal" | "error" }) {
       <View className="my-4">
         <ActivityCard bgColor="bg-[#D9D9D9]">
           <Text className="text-md leading-normal tracking-wide font-medium text-black">
-            {mode === "error" ? t("Error!") : t("No recent activities yet")}
+            {t("No recent activities yet")}
           </Text>
           <Text className="my-6 leading-normal tracking-wider font-normal text-sm text-black w-11/12">
-            {mode === "error"
-              ? t("An error occurred while fetching recent activities")
-              : t(
-                  "When you engage in different activities, your recent activities will appear here"
-                )}
+            {t(
+              "When you engage in different activities, your recent activities will appear here"
+            )}
           </Text>
         </ActivityCard>
       </View>
@@ -228,7 +228,10 @@ function Activities() {
   }
 
   if (status === "error") {
-    return <NoActvity mode={"error"} />;
+    return Toast.show({
+      type: "error",
+      text1: error.message,
+    });
   }
 
   if (!data || !data.length) {
