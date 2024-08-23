@@ -9,7 +9,6 @@ import {
   ViewabilityConfig,
 } from "react-native";
 import { Text } from "~/components/ui/text";
-import * as AvatarPrimitive from "@rn-primitives/avatar";
 import { Bell, SearchIcon } from "lucide-react-native";
 import { useSession } from "~/stores/session";
 import { useColorScheme } from "~/lib/useColorScheme";
@@ -23,6 +22,7 @@ import { useQuery } from "@tanstack/react-query";
 import type { Activity } from "~/types/dashboard";
 import Toast from "react-native-toast-message";
 import { useRouter } from "expo-router";
+import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 
 const studyTips: any[] = [
   {
@@ -90,16 +90,13 @@ function Header() {
 
   return (
     <View className="flex-row items-center mt-5">
-      <AvatarPrimitive.Root alt="Avatar" className="mr-3">
-        <AvatarPrimitive.Image
-          source={{ uri: AVATAR_URI }}
-          width={40}
-          height={40}
-        />
-        <AvatarPrimitive.Fallback>
+      <Avatar alt="user avatar" className="mr-3">
+        <AvatarImage source={{ uri: AVATAR_URI }} />
+        <AvatarFallback>
           <Text>ZN</Text>
-        </AvatarPrimitive.Fallback>
-      </AvatarPrimitive.Root>
+        </AvatarFallback>
+      </Avatar>
+
       <Text className="font-extrabold">Hi {user?.first_name},</Text>
       <Pressable
         className={`rounded-full ml-auto p-3 relative ${isDarkColorScheme ? "bg-[#161616]" : "bg-[#f6f6f6]"}`}
