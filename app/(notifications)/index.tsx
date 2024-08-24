@@ -27,13 +27,15 @@ function NotificationsGroup() {
       <Text className="text-[20px] font-satoshi font-medium tracking-wide leading-normal pl-2">
         Today
       </Text>
-      <View className="rounded-lg bg-white shadow shadow-black/20 mt-4">
+      <View className="rounded-lg overflow-hidden bg-white shadow shadow-black/20 mt-4">
         <NotificationItem />
         <Separator
           className={`${isDarkColorScheme ? "bg-[#212121]" : "bg-[##EAEAEA]"}`}
         />
         <NotificationItem />
-        <Separator />
+        <Separator
+          className={`${isDarkColorScheme ? "bg-[#212121]" : "bg-[##EAEAEA]"}`}
+        />
         <NotificationItem />
       </View>
     </View>

@@ -17,44 +17,19 @@ import { useTranslation } from "react-i18next";
 import * as Progress from "react-native-progress";
 import CameraIcon from "~/components/icons/Camera";
 import useAxios from "~/lib/hooks/useAxios";
-import { getActivities } from "~/services/dashboard";
+import { getActivities, getStudyTips } from "~/services/dashboard";
 import { useQuery } from "@tanstack/react-query";
-import type { Activity } from "~/types/dashboard";
+import { StudyTips as StudyTipsType, type Activity } from "~/types/dashboard";
 import Toast from "react-native-toast-message";
 import { useRouter } from "expo-router";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 
-const studyTips: any[] = [
-  {
-    id: 1,
-    title: "Stay focused",
-    description: "Set specific study times and prioritize your tasks",
-    bgColor: "bg-[#FDB704]",
-  },
-  {
-    id: 2,
-    title: "Take breaks",
-    description: "Give yourself a break when you feel overwhelmed",
-    bgColor: "bg-[##FBC70E4D]",
-  },
-  {
-    id: 3,
-    title: "Review materials",
-    description: "Review your study materials before class",
-    bgColor: "bg-[##11BA734D]",
-  },
-  {
-    id: 4,
-    title: "Set reminders",
-    description: "Schedule notifications for study breaks",
-    bgColor: "bg-[#EF93034D]",
-  },
-  {
-    id: 5,
-    title: "Practice active recall",
-    description: "Use active recall exercises to help you recall information",
-    bgColor: "bg-[#EF9303]",
-  },
+const studyTipsBgColor: any[] = [
+  "bg-[#FDB704]",
+  "bg-[##FBC70E4D]",
+  "bg-[##11BA734D]",
+  "bg-[#EF93034D]",
+  "bg-[#EF9303]",
 ];
 
 export default function HomeScreen() {
@@ -257,11 +232,17 @@ function Activities() {
 function ActivityCard({
   bgColor,
   children,
+  classname,
 }: {
   bgColor: string;
+  classname: string;
   children: React.ReactNode;
 }) {
-  return <View className={`${bgColor} rounded-xl p-4 pt-6`}>{children}</View>;
+  return (
+    <View className={`${bgColor} rounded-xl p-4 pt-6 ${classname}`}>
+      {children}
+    </View>
+  );
 }
 
 function ActivityItem({ item }: { item: Activity }) {
@@ -311,6 +292,31 @@ function StudyTips() {
     }
   });
 
+  const axios = useAxios();
+
+  const { data, status, error } = useQuery<StudyTipsType[]>({
+    queryKey: ["studyTips"],
+    queryFn: () => getStudyTips(axios),
+  });
+
+  if (status === "pending") {
+    return <ActivityIndicator size={"large"} color={"#FDB704"} />;
+  }
+
+  if (status === "error") {
+    Toast.show({
+      type: "error",
+      text1: error.message,
+    });
+    return null;
+  }
+
+  const dataToRender = data.map((d) => ({
+    ...d,
+    bgColor:
+      studyTipsBgColor[Math.floor(Math.random() * studyTipsBgColor.length)],
+  }));
+
   return (
     <View className="w-full pt-4">
       <Title title={t("Study Tips")} />
@@ -320,14 +326,14 @@ function StudyTips() {
         onScrollToIndexFailed={() => {}}
         viewabilityConfig={viewabilityConfig}
         onViewableItemsChanged={onViewableItemsChanged.current}
-        data={studyTips}
+        data={dataToRender}
         renderItem={({ item }) => {
           return (
-            <View className="mr-4 max-w-96">
+            <View className="mr-4 min-w-80">
               <ActivityCard bgColor={item.bgColor}>
                 <Title title={item.title} />
                 <Text
-                  className={`my-6 leading-normal tracking-wider font-normal text-sm ${isDarkColorScheme ? "text-white" : "text-black"} w-11/12`}
+                  className={`my-2 leading-normal tracking-wider font-normal text-sm ${isDarkColorScheme ? "text-white" : "text-black"} w-11/12`}
                 >
                   {item.description}
                 </Text>
@@ -343,7 +349,7 @@ function StudyTips() {
         style={{ width: "100%" }}
         className="flex-row items-center justify-center gap-2 mt-4"
       >
-        {studyTips.map((_, index) => {
+        {data.map((_, index) => {
           return (
             <Pressable
               style={{
