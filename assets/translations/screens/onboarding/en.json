@@ -34,5 +34,16 @@
     "Passwords don't match": "Passwords don't match",
     "Please re-enter your password": "Please re-enter your password",
     "Password must contain at least 4 characters": "Password must contain at least 4 characters"
+  },
+  "DashboardScreens": {
+    "Hi": "Hi",
+    "Search for anything": "Search for anything",
+    "Activities": "Activities",
+    "You scored": "You scored",
+    "Quick Actions": "Quick Actions",
+    "Start Quiz": "Start Quiz",
+    "Study Materials": "Study Materials",
+    "Create Group": "Create Group",
+    "Categories": "Categories"
   }
 }

@@ -1,0 +1,19 @@
+{
+  "DashboardScreens": {
+    "Hi": "Salut",
+    "Search for anything": "Recherchez n’importe quoi",
+    "Activities": "Activités",
+    "Last Quiz": "Dernier quiz",
+    "You scored": "Vous avez marqué",
+    "Quick Actions": "Actions rapides",
+    "Start Quiz": "Démarrer le quiz",
+    "Study Materials": "Matériel d’étude",
+    "Create Group": "Créer un groupe",
+    "Categories": "Catégories",
+    "Study Tips": "Conseils d’étude",
+    "Error!": "Erreur!",
+    "No recent activities yet": "Aucune activité récente pour le moment",
+    "An error occurred while fetching recent activities": "Une erreur s’est produite lors de la récupération des activités récentes",
+    "When you engage in different activities, your recent activities will appear here": "Lorsque vous participez à différentes activités, vos activités récentes apparaîtront ici"
+  }
+}

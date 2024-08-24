@@ -4,7 +4,7 @@ import { useSession } from '~/stores/session';
 
 export default function IndexScreen() {
   const session = useSession(({ session }) => session)
-  if (!!session) {
+  if (session) {
     return <Redirect href={"(tabs)/home"} />
   }
   return <Redirect href={"(onboarding)/welcome"} /> 

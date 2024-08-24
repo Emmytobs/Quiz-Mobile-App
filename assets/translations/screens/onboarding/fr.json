@@ -34,5 +34,16 @@
     "Passwords don't match": "Les mots de passe ne correspondent pas",
     "Please re-enter your password": "Veuillez ressaisir votre mot de passe",
     "Password must contain at least 4 characters": "Le mot de passe doit contenir au moins 4 caractères"
+  },
+  "DashboardScreens": {
+    "Hi": "Salut",
+    "Search for anything": "Recherchez n’importe quoi",
+    "Activities": "Activités",
+    "You scored": "Vous avez marqué",
+    "Quick Actions": "Actions rapides",
+    "Start Quiz": "Démarrer le quiz",
+    "Study Materials": "Matériel d’étude",
+    "Create Group": "Créer un groupe",
+    "Categories": "Catégories"
   }
 }

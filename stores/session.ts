@@ -9,12 +9,12 @@ type SessionStore = {
 }
 
 export interface Session {
-  token: string;
+  access: string;
   refresh: string;
   user: User
 }
 
-interface User {
+export interface User {
   first_name: string,
   last_name: string,
   email: string,
